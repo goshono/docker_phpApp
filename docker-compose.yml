@@ -1,0 +1,41 @@
+# Docker Composeは、複数のコンテナを自動で立ち上げる構成管理ツールである
+version: '3'
+
+# アプリケーションを動かすための各要素をserviceと呼ぶ
+services:
+  # 各サービス名は、わかりやすければなんでもいい
+  # 例) "db"ではなく、"database"のように表記
+  # web:
+    # iamge: dockerfileではなく、dockerイメージをそのまま使う
+    # image: httpd:latest
+    # ports:
+      # ホスト端末の8080万ポートにアクセスすることで、コンテナの80番ポートにアクセスできる
+      # 80番ポートはwebサーバがクライアントからの接続を待ち受ける標準ポート
+      # - 8080:80
+    ## volumes: マウント設定(ホストOSのファイルと Docker上のファイルを紐付け)
+    # (ホスト側):(Docker側)
+    # volumes: 
+    #   - /Users/goshono/Desktop/docker_phpApp/html:/usr/local/apache2/htdocs
+
+  # PHP + Apache
+  php:
+    container_name: myweb-app
+    ## build: dockerFileを実行し、ビルドされるときのパスを指定
+    build: ./php
+    ports:
+      - 8080:80
+    volumes:
+      - ./www/project.com:/var/www/project.com
+    ## depends_on: Service同士の依存関係を表す。指定されたサービスの起動より後に起動するように順番を調整する
+
+  db:
+    container_name: myapp-db
+    build: ./postgres
+    environment:
+      POSTGRES_DB: sampledb
+      POSTGRES_USER: sample_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_PORT: 5432 # PostgreSQLのデフォルトポート
+    ports:
+      - 5432:5432
+    
