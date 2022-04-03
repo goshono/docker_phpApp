@@ -2,8 +2,10 @@
 # 名前空間によってクラスを階層的に管理することができる
 namespace Libs;
 
+use Libs\Controllers\Controller;
 use Libs\Https\Request;
 use Libs\Https\Response;
+use TaskApp\Controllers\TasksController;
 
 class Project {
   private static Project $_instance;
@@ -21,17 +23,24 @@ class Project {
     return self::$_instance;
   }
   public function run() {
-    $content = '';
-    $content .= 'Method Type:' . $this->_request->methodType() . '<br>';
-    $content .= 'Header Connection: ' . $this->_request->header('Connection'). '<br>';
-    $content .= 'Host :' . $this->_request->host() . '<br>';
-    $content .= 'Request uri: ' . $this->_request->requestUri() . '<br>';
-    $content .= 'Path info:' . $this-> _request->pathInfo() . '<br>';
-    $content .= 'GET name:' . $this->_request->get('name') . '<br>';
-    $content .= 'GET aaa:' . $this->_request->get('aaa') . '<br>';
+ 
+    list($controller, $action, $params) = $this->_selectController();
+    $response = $this->_actionController($controller, $action, $params);
+    $response->send();
+  }
 
-    $response = new Response($content);
-    $response ->send();
+  private function _selectController() {
+    $controller = new TasksController();
+    $action = 'detail'; # 動作確認用
+    $params = ['id' => 1];
+    return [$controller, $action, $params];
+  }
+
+  private function _actionController(
+    Controller $controller,
+    string $action,
+    array $params ) {
+      return $controller->run($action, $params);
   }
 }
 ?>
