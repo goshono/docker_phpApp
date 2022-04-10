@@ -31,9 +31,8 @@ class Project {
 
   private function _selectController() {
     $controller = new TasksController();
-    $action = 'detail'; # 動作確認用
-    $params = ['id' => 1];
-    return [$controller, $action, $params];
+    $action = 'detail';
+    return [$controller, $action, []];
   }
 
   private function _actionController(

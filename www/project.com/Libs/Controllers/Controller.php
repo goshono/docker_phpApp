@@ -4,6 +4,7 @@ namespace Libs\Controllers;
 use Config\ProjectSettings;
 use Libs\Https\Request;
 use Libs\Https\Response;
+use Libs\Views\View;
 
 class Controller {
 
@@ -22,6 +23,15 @@ class Controller {
     }
 
     return $this->$action($params);
+  }
+
+  protected function render($file_path_after_templates_dir, $data = []) {
+    $view = new View();
+    return new Response($view->render($file_path_after_templates_dir, $data));
+  }
+
+  protected function redirect($uri) {
+    return Response::redirect($uri);
   }
 
   protected function render404($message = 'Page not found.') {

@@ -7,11 +7,12 @@ use Libs\Https\Response;
 class TasksController extends Controller {
 
   public function index($params) {
-    return new Response("This is index of tesk controller.");
+    return $this->render('tasks/index');
   }
 
   public function detail($params) { 
-    return new Response("This is detail of tasl controller.<br> id:" . $params['id']);
+    $data = ['title' => 'Create web framework.', 'status' => 'DOING'];
+    return $this->render('tasks/detail', $data);
   }
 }
 

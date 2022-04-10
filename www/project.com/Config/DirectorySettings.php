@@ -6,6 +6,8 @@ class DirectorySettings {
   # DIRECTORY_SEPARTOR はphpの定義済み定数
   # APPLICATION_ROOT_DIR = /var/www/project.com/Config/../
   public const APPLICATION_ROOT_DIR = __DIR__.DIRECTORY_SEPARATOR."..".DIRECTORY_SEPARATOR;
+  public const TEMPLATES_ROOT_DIR = self::APPLICATION_ROOT_DIR . DIRECTORY_SEPARATOR . "templates" . DIRECTORY_SEPARATOR;
+  // public const TEMPLATES_ROOT_DIR = self::APPLICATION_ROOT_DIR . "templates" . DIRECTORY_SEPARATOR;
 }
 
 ?>
