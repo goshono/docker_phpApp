@@ -2,17 +2,19 @@
 # 名前空間によってクラスを階層的に管理することができる
 namespace Libs;
 
+use Config\ProjectSettings;
 use Libs\Controllers\Controller;
 use Libs\Https\Request;
-use Libs\Https\Response;
-use TaskApp\Controllers\TasksController;
+use Libs\Routing\Router;
 
 class Project {
   private static Project $_instance;
   private Request $_request;
+  private Router $_router;
 
   private function __construct() {
     $this->_request = Request::instance();
+    $this->_router = new Router(ProjectSettings::ROUTING_TABLE_CLASSES);
   }
 
   public static function instance() {
@@ -30,9 +32,13 @@ class Project {
   }
 
   private function _selectController() {
-    $controller = new TasksController();
-    $action = 'detail';
-    return [$controller, $action, []];
+    $result = $this->_router->resolve($this->_request);
+    if (is_null($result)) {
+      $controller = \Config\ProjectSettings::NOT_FOUND_CONTROLLER;
+      return [new $controller(), 'index', []];
+    }
+
+    return [new $result['class'], $result['action'], $result['params']];
   }
 
   private function _actionController(

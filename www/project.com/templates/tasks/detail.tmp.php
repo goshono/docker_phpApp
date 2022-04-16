@@ -11,6 +11,9 @@
     <h2>Tasks Detail Page from Template.</h2>
     <ul>
       <li>
+        ID: <?php $escape($id) ?>
+      </li>
+      <li>
         Title: <?php $escape($title) ?>
       </li>
       <li>
