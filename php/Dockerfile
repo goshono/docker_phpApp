@@ -11,4 +11,15 @@ COPY php.ini /usr/local/etc/php
 RUN cp -r /etc/apache2 /etc/apache2_bk
 # VirtualHostの固有設定追加
 COPY vhost.conf /etc/apache2/sites-available/
+# sites-enabledディレクトリにシンボルリンクを張る
+RUN a2ensite vhost
+# デフォルトの000-defaultのシンボルリンクを無効にする
+RUN a2dissite 000-default
 
+# PDOの設定
+RUN apt-get update && apt-get install -y \
+    libpq-dev \
+    && docker-php-ext-install pdo_pgsql \
+    && a2enmod rewrite 
+# dockerfileに記載時は再起動不要（そもそもまだ起動していない）
+# RUN /etc/init.d/apache2 reload

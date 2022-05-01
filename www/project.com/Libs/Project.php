@@ -4,6 +4,7 @@ namespace Libs;
 
 use Config\ProjectSettings;
 use Libs\Controllers\Controller;
+use Libs\DB\DBManager;
 use Libs\Https\Request;
 use Libs\Routing\Router;
 
@@ -15,6 +16,7 @@ class Project {
   private function __construct() {
     $this->_request = Request::instance();
     $this->_router = new Router(ProjectSettings::ROUTING_TABLE_CLASSES);
+    DBManager::instance();
   }
 
   public static function instance() {
@@ -25,7 +27,6 @@ class Project {
     return self::$_instance;
   }
   public function run() {
- 
     list($controller, $action, $params) = $this->_selectController();
     $response = $this->_actionController($controller, $action, $params);
     $response->send();
