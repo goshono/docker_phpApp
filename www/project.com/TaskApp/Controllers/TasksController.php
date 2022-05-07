@@ -20,8 +20,10 @@ class TasksController extends Controller {
   }
   
 
-  public function detail($params) { 
+  public function detail($params) {
+    // echo \Libs\Https\Session::instance()->get('task_id') . '<br>';
     $task = $this->_repository->get($params['id']);
+    // \Libs\Https\Session::instance()->set('task_id', $params['id']);
     if (is_null($task)) {
       return $this->render404();
     }

@@ -14,6 +14,11 @@ class DBSettings {
     ];
   public const REPOSITORIES_TABLE =
    [
+    [
+      'key' => "users",
+      'table_name' => 'users',
+      "repository" => \Libs\Apps\Auth\Repositories\UsersRepository::class
+    ],
      [
        'key' => "tasks",
        'table_name' => 'tasks',
